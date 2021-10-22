@@ -99,7 +99,7 @@ def main():
         else:
             model = checkpoint
             args.start_epoch = 0
-        output_directory = os.path.dirname('/home/jetson/FastDepth')
+        output_directory = os.path.dirname(args.evaluate)
         validate(val_loader, model, args.start_epoch, write_to_file=False)
         return
 
@@ -171,7 +171,8 @@ def validate(val_loader, model, epoch, write_to_file=True):
     average_meter = AverageMeter()
     model.eval()  # switch to evaluate mode
     end = time.time()
-    eval_file = output_directory + '/FastDepth/evaluation.csv'
+    eval_file = os.path.join(output_directory, 'evaluation.csv')
+    # eval_file = os.path.join(get_output_directory(args), 'evaluation_test.csv')
     f = open(eval_file, "w+")
     f.write("Max_Error,Depth,RMSE,GPU_TIME,Number_Of_Frame\r\n")
     for i, (input, target) in enumerate(val_loader):
